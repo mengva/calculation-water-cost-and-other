@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>colulation</title>
+
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        button{
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+            margin: 1rem;
+        }
+    </style>
+</head>
+<body>
+ 
+    <button onclick="colulate()">Colulate</button>
+
+    <script>
+        
+        function colulate(){
+            
+            while(true){
+
+                const promt = prompt(`01: ຄ່ານໍ້າ Water Cost\n02: ຄ່າໄຟຟ້າ Electricity Cost\n03: ຄ່າໂທລະສັບ Telephone Charges\n04: ອອກ Exit`);
+
+                if(!promt){
+                    alert(`ກະລຸນາປ້ອມຄ່າ`);
+                    colulate();
+                    return;
+                }
+
+                if(promt.includes("1" || "01")) WaterCost();
+                if(promt.includes("2" || "02")) ElectricityCost();
+                if(promt.includes("3" || "03")) TelephoneCharges();
+                if(promt.toLowerCase() === "e" || promt.includes("4" || "04")) return;
+            }
+        }
+
+        function checkCost(text){
+            alert(text);
+        }
+
+        // ***************************************************************
+        
+        function WaterCost(){
+
+           // ເລກຄັ້ງນີ້
+           const thisNumber = prompt("ເລກຄັ້ງນີ້: { this number }");
+
+           if(Number(thisNumber) === 0){
+              checkCost(`ກະລຸນາລອງອີກຄັ້ງ`);
+              WaterCost();
+              return;
+           }
+           
+           if(!thisNumber) {
+               checkCost("ກະລຸນາປ້ອມ...");
+               WaterCost();
+               return;
+            }
+           previousNumbers(thisNumber);
+        }
+
+        function previousNumbers(thisNumber){
+            
+            // ເລກຄັ້ງກ່ອນ
+            const previousNumber = Number(prompt("ເລກຄັ້ງກ່ອນ: { the previous number }"));
+
+            // ພະລັງງານໃຊ້ໃນເດືອນ gallon
+            const numberThisMonth = Number(thisNumber - previousNumber);
+    
+            // ຄ່າ 1 gallon = 10 kip;
+            // 1 gallon = 3.78541 liter ລິດ
+            // 1 cubic meter = 1000 liter = 20000 kg
+            
+            let total = 0;
+            let _15 = numberThisMonth < 5 ? numberThisMonth * 100 : 5 * 100;
+            let _610 = _15 + (numberThisMonth - 5) * 300;
+            let _11 = _15 + (5 * 300) + (numberThisMonth - 5 - 5) * 500;
+    
+            if(!previousNumber){
+                checkCost("ກະລຸນາປ້ອມ...");
+                WaterCost();
+                return;
+            };
+    
+            if(+thisNumber < previousNumber){
+                checkCost(`ບໍ່ສາມາດຄຳນວນໄດ້ເນື່ອງຈາກເລກຄັ້ງນີ້ ${thisNumber} ນ້ອຍກວ່າເລກຄັ້ງກ່ອນ ${previousNumber} ກະລຸນາລອງອີກຄັ້ງ.`);
+                WaterCost();
+                return;
+            }
+
+            let t = "ນີ້ແມ່ນຄ່ານໍ້າທີ່ທ່ານຕ້ອງຈ່າຍໃນເດືອນນີ້:";
+
+            if(numberThisMonth > 0 && numberThisMonth < 6){
+                total = _15;
+                checkCost(`${t} ${total} Kip`);
+            }
+
+            if(numberThisMonth > 5 && numberThisMonth < 11){
+                total = _610;
+                checkCost(`${t} ${total} Kip`);
+            }
+
+            if(numberThisMonth > 10){
+                total = _11;
+                checkCost(`${t} ${total} Kip`);
+            }
+        }
+
+        // *********************************************************************
+
+        function ElectricityCost(){
+
+            // ເລກຄັ້ງນີ້
+            const thisNumber = prompt("ເລກຄັ້ງນີ້: { this number }");
+
+            if(+thisNumber === 0){
+                checkCost("ກະລຸນາລອງອີກຄັ້ງ");
+                ElectricityCost();
+                return;
+            }
+
+            if(isNaN(thisNumber)){
+                checkCost("ກະລຸນາໃສ່ຕົວເລກ...");
+                ElectricityCost();
+                return;
+            }
+
+            if(!thisNumber){
+                checkCost("ກະລຸນາປ້ອມ...");
+                ElectricityCost();
+                return;
+            }
+            previousNumberss(thisNumber);
+        }
+
+
+        function previousNumberss(thisNumber){
+            
+            // ເລກຄັ້ງກ່ອນ
+            const previousNumber = Number(prompt("ເລກຄັ້ງກ່ອນ: { the previous number }"));
+
+            // ພະລັງງານໃຊ້ໃນເດືອນ numberThisMonth
+            const NTM = Number(thisNumber - previousNumber);
+
+            // ຄ່າບຳລຸງຮັກສາ MaintenanceCost
+            const MC = 9100;
+
+            // ອາກອນມູນຄ່າ 7%
+            let sevenPercentVAT = 0;
+
+            // ຈໍາ​ນວນ​ທັງ​ຫມົດ
+            let totalAmount = 0;
+
+            let _25 = NTM <= 25 ? NTM * 355 : 25 * 355; // 25 * 355 = 8,875 kip
+
+            const _26_150 = _25 + ((NTM - 25) * 422); // 125 * 422 = 52,750 + 8,875 = 61,625 kip
+            const _151_300 = _25 + (125 * 422) + ((NTM - 25 - 125) * 815); // 150 * 815 = 122,250 + 61,625 = 183,875 kip
+            const _301_400 = _25 + (125 * 422) + (150 * 815) + ((NTM - 25 - 125 - 150) * 898); // 100 * 898 = 89,800 + 183,875 = 273,675 kip
+            const _401_500 = _25 + (125 * 422) + (150 * 815) + (100 * 898) + ((NTM - 25 - 125 - 150 - 100) * 984); // 100 * 984 = 98,400 + 273,675 = 372,075 kip
+            const _501_ = _25 + (125 * 422) + (150 * 815) + (100 * 898) + (100 * 984) + ((NTM - 25 - 125 - 150 - 100 - 100) * 984);
+
+            const text = "ນີ້ແມ່ນຄ່າໄຟຟ້າທີ່ທ່ານຕ້ອງຈ່າຍໃນເດືອນນີ້";
+
+            if(!previousNumber){
+                checkCost("ກະລຸນາປ້ອມ...");
+                ElectricityCost();
+                return;
+            }
+
+            if(+thisNumber < previousNumber){
+                checkCost(`ບໍ່ສາມາດຄຳນວນໄດ້ເນື່ອງຈາກເລກຄັ້ງນີ້ ${thisNumber} ນ້ອຍກວ່າເລກຄັ້ງກ່ອນ ${previousNumber} ກະລຸນາລອງອີກຄັ້ງ.`);
+                ElectricityCost();
+                return;
+            }
+
+            const oper = operatorSevenPercentVAT;
+
+            if(NTM <= 25) oper(text, MC, totalAmount, _25);
+            
+            else if(NTM >= 26 && NTM <= 150) oper(text, MC, totalAmount, _26_150);
+            
+            else if(NTM >= 151 && NTM <= 300) oper(text, MC, totalAmount, _151_300);
+            
+            else if(NTM >= 301 && NTM <= 400) oper(text, MC, totalAmount, _301_400);
+            
+            else if(NTM >= 401 && NTM <= 500) oper(text, MC, totalAmount, _401_500);
+            
+            else oper(text, MC, totalAmount, _501_);
+        }
+
+        function operatorSevenPercentVAT(text, m, t, n){
+            
+           // ຈໍາ​ນວນ​ທັງ​ຫມົດ
+            t = n + m;
+            sevenPercentVAT = (t * 7 / 100);
+            const total = t + sevenPercentVAT;
+            checkCost(`${text}: ${total.toFixed(0)} kip`);
+        }
+
+        // telephone  *****************************************************
+
+        function TelephoneCharges(){
+
+            const TP = prompt(`ກະລຸນາໃສ່ເບີໂທລະສັບຂອງທ່ານ Exp: 020 or 20, 030 or 30`);
+
+            if(!TP){
+                checkCost("ກະລຸນາປ້ອມເບີໂທລະສັບຂອງທ່ານ...");
+                TelephoneCharges();
+                return; 
+            };
+            checkPhoneNumber(TP);
+        }
+
+        function payMoney(n){
+
+            const money = confirm(`${n.toLocaleString()} Kip`);
+            checkCost(money ? "ຊຳລະສຳເລັດແລ້ວ" : "ຍົກເລີກການຊຳລະແລ້ວ");
+        }
+
+        function checkPhoneNumber(n){
+
+            if(n.slice(0, 2) === "20") return check(n, 2, 8);
+            
+            if(n.slice(0, 3) === "020") return check(n, 3, 8);
+
+            if(n.slice(0, 2) === "30") return check(n, 2, 7);
+            
+            if(n.slice(0, 3) === "030") return check(n, 3, 7);
+
+            checkCost("ເບີໂທລະສັບຂອງທ່ານບໍ່ຖືກຕ້ອງກະລຸນາລອງອີກຄັ້ງ");
+            TelephoneCharges();
+        }
+
+        function check(n, n1, n2){
+
+            if(n.slice(n1).length == n2){
+                condition(n);
+                return;
+            }
+            checkCost("ເບີໂທລະສັບຂອງທ່ານບໍ່ຖືກຕ້ອງກະລຸນາລອງອີກຄັ້ງ");
+            TelephoneCharges();
+        }
+
+        function checkSelect(select, n1, n2){
+            return select === n1 || select === parseInt(n2);
+        }
+
+        function condition(n){
+
+            if(!isNaN(n) && n.length >= 9 && n.length <= 11){
+
+                const select = Number(prompt(`ເລືອກຈຳນວນເງິນ:\n01: 5,000 kip\n02: 10,000 kip\n03: 15,000 kip\n04: 20,000 kip\n05: 30,000 kip\n06: 50,000 kip\n07: 100,000 kip\n08: 200,000 kip\n09: 250,000 kip\n10: other ອື່ນໆ\n11: Exit`));
+
+                if(!select){
+                    checkCost("ກະລຸນາເລື່ອກ...");
+                    condition(n);
+                    return;
+                }
+    
+                if(checkSelect(select, 1, "01")) payMoney(5000);
+
+                else if(checkSelect(select, 2, "02")) payMoney(10000);
+                
+                else if(checkSelect(select, 3, "03")) payMoney(15000);
+                
+                else if(checkSelect(select, 4, "04")) payMoney(20000);
+                
+                else if(checkSelect(select, 5, "05")) payMoney(30000);
+                
+                else if(checkSelect(select, 6, "06")) payMoney(50000);
+                
+                else if(checkSelect(select, 7, "07")) payMoney(100000);
+                
+                else if(checkSelect(select, 8, "08")) payMoney(200000);
+                
+                else if(checkSelect(select, 9, "09")) payMoney(250000);
+                
+                else if(select === 10){
+                    const other = Number(prompt("ກະລຸນາໃສ່ຈຳນວນເງິນຂອງທ່ານ"));
+
+                    if(!other){
+                        checkCost("ກະລຸນາໃສ່ຈຳນວນເງິນຂອງທ່ານ...");
+                        condition(n);
+                        return;
+                    };
+
+                    if(isNaN(other)){
+                        checkCost("ກະລຸນາໃສ່ໂຕເລກ");
+                        condition(n);
+                        return;
+                    };
+
+                    if(other < parseInt(5000)){
+                        checkCost("ບໍ່ສາມາດຊຳລະໄດ້ເພາະວ່າຈຳນວນເງິນຂອງທ່ານນ້ອຍກວ່າ 5,000 ກີບ");
+                        condition(n);
+                        return;
+                    };
+
+                    if(other >= parseInt(5000)){
+                        checkCost("ຊຳລະສຳເລັດແລ້ວ");
+                    }
+                    
+                }else if(select === +"11") return;
+                else{
+                    checkCost(`${select} ບໍ່ຖືກຕ້ອງກະລຸນາລອງອີກຄັ້ງ`);
+                    condition(n);
+                }
+            }else{
+                checkCost("ເບີໂທລະສັບຂອງທ່ານບໍ່ຖືກຕ້ອງກະລຸນາລອງອີກຄັ້ງ");
+                TelephoneCharges();
+            }
+        }
+
+    </script>
+</body>
+</html>
